@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">PulsPressure</string>
+    <string name="add">Добавить</string>
+    <string name="pressure_high">Верхнее давление</string>
+    <string name="pressure_low">Нижнее давление</string>
+    <string name="pulse">Пульс</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
+</resources>

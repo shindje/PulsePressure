@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "742640394706",
+    "project_id": "pulspressure",
+    "storage_bucket": "pulspressure.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:742640394706:android:9e32859349421c60b9e80b",
+        "android_client_info": {
+          "package_name": "com.example.pulspressure"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "742640394706-8hqfneqmfhflp7jfnsb0osbdlngqlhba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtJr8LkFl1rj0iQEivpyYnWoCJZigogvM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "742640394706-8hqfneqmfhflp7jfnsb0osbdlngqlhba.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

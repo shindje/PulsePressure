@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class RvAdapter () : RecyclerView.Adapter<RvAdapter.DataViewHolder>() {
-    private var data: ArrayList<Model> = arrayListOf()
+    private var data: List<Model> = arrayListOf()
 
     class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvTime: TextView = itemView.findViewById(R.id.tv_time)
@@ -16,10 +16,10 @@ class RvAdapter () : RecyclerView.Adapter<RvAdapter.DataViewHolder>() {
         val tvPulse: TextView = itemView.findViewById(R.id.tv_pulse)
 
         fun bind(model: Model) {
-            //tvTime =
-            tvHigh.text = model.pressureHigh.toString()
-            tvLow.text = model.pressureLow.toString()
-            tvPulse.text = model.pulse.toString()
+            tvTime.text = model.addDate
+            tvHigh.text = model.high
+            tvLow.text = model.low
+            tvPulse.text = model.pulse
         }
     }
 
@@ -33,7 +33,7 @@ class RvAdapter () : RecyclerView.Adapter<RvAdapter.DataViewHolder>() {
         holder.bind(model)
     }
 
-    fun setData(newData: ArrayList<Model>) {
+    fun setData(newData: List<Model>) {
         data = newData
         notifyDataSetChanged()
     }

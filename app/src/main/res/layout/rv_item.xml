@@ -7,20 +7,42 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:id="@+id/tv_time" />
 
     <TextView
+        android:layout_marginStart="26dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="26sp"
+        android:background="@color/teal_200"
         android:id="@+id/tv_high" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_low" />
+        android:background="@color/teal_200"
+        android:textSize="26sp"
+        android:text=" / " />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/teal_200"
+        android:textSize="26sp"
+        android:id="@+id/tv_low" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_baseline_favorite_black_24" />
+
+    <TextView
+        android:layout_marginStart="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="26sp"
         android:id="@+id/tv_pulse" />
 </LinearLayout>

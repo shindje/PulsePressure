@@ -78,4 +78,17 @@
         android:src="@drawable/ic_baseline_favorite_24"
         android:layout_gravity="bottom|end"/>
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:id="@+id/pb" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:id="@+id/tv" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

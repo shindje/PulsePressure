@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pulspressure.data.Model
 
 class RvAdapter () : RecyclerView.Adapter<RvAdapter.DataViewHolder>() {
     private var data: List<Model> = arrayListOf()

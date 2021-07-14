@@ -3,23 +3,21 @@ package com.example.pulspressure
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pulspressure.data.Model
+import com.example.pulspressure.mvi.MainContract
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
-import java.text.SimpleDateFormat
+import kotlinx.coroutines.flow.collect
 import java.util.*
 
-const val COLLECTION = "pulsePressure"
-
 class MainActivity : AppCompatActivity() {
-    private lateinit var db: FirebaseFirestore
     private lateinit var rv: RecyclerView
     private lateinit var fabAdd: FloatingActionButton
     private lateinit var adapter: RvAdapter
@@ -29,18 +27,34 @@ class MainActivity : AppCompatActivity() {
     private lateinit var etHigh: EditText
     private lateinit var etLow: EditText
     private lateinit var etPulse: EditText
+    private lateinit var pb: ProgressBar
+    private lateinit var tv: TextView
+
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        db = FirebaseFirestore.getInstance()
 
+        initViews()
+        loadData()
+        initButtons()
+        setOnIntentListeners()
+    }
+
+    private fun initViews() {
         rv =  findViewById(R.id.rv)
         rv.layoutManager = LinearLayoutManager(this)
         adapter = RvAdapter()
         rv.adapter = adapter
-        loadData()
+        etHigh = findViewById(R.id.et_high)
+        etLow = findViewById(R.id.et_low)
+        etPulse = findViewById(R.id.et_pulse)
+        pb = findViewById(R.id.pb)
+        tv = findViewById(R.id.tv)
+    }
 
+    private fun initButtons() {
         fabAdd = findViewById(R.id.fab_add)
         layoutAdd = findViewById(R.id.layout_add)
         fabAdd.setOnClickListener {
@@ -53,9 +67,6 @@ class MainActivity : AppCompatActivity() {
             showRv()
         }
 
-        etHigh = findViewById(R.id.et_high)
-        etLow = findViewById(R.id.et_low)
-        etPulse = findViewById(R.id.et_pulse)
 
         btnSave = findViewById(R.id.btn_save)
         btnSave.setOnClickListener {
@@ -67,34 +78,42 @@ class MainActivity : AppCompatActivity() {
                 "low" to etLow.text.toString(),
                 "pulse" to etPulse.text.toString()
             )
+            viewModel.setEvent(MainContract.Event.OnAdd(saveData))
+        }
+    }
 
-            db.collection(COLLECTION)
-                .add(saveData)
-                .addOnSuccessListener { documentReference ->
-                    loadData()
-                    showRv()
+    private fun setOnIntentListeners() {
+        lifecycleScope.launchWhenStarted {
+            viewModel.uiState.collect {
+                when (it.actionState) {
+                    is MainContract.ActionState.Idle -> { pb.isVisible = false }
+                    is MainContract.ActionState.Loading -> { pb.isVisible = true }
+                    is MainContract.ActionState.Success -> {
+                        pb.isVisible = false
+                        adapter.setData(it.actionState.data)
+                    }
+                    is MainContract.ActionState.ItemAdded -> {
+                        showRv()
+                        loadData()
+                    }
                 }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this, "Ошибка добавления: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.effect.collect {
+                when (it) {
+                    is MainContract.Effect.ShowError -> {
+                        pb.isVisible = false
+                        Toast.makeText(this@MainActivity, it.error, Toast.LENGTH_SHORT).show()
+                    }
                 }
+            }
         }
     }
 
     private fun loadData() {
-        db.collection(COLLECTION)
-            .get()
-            .addOnSuccessListener { result ->
-                val data = mutableListOf<Model>()
-                for (document in result) {
-                    val model = document.toObject(Model::class.java)
-                    data.add(model)
-                }
-                data.sortBy { model -> model.addDate }
-                adapter.setData(data)
-            }
-            .addOnFailureListener { exception ->
-                Toast.makeText(this, "Ошибка загрузки данных", Toast.LENGTH_SHORT).show()
-            }
+        viewModel.setEvent(MainContract.Event.OnGetList)
     }
 
     private fun showLayoutAdd() {

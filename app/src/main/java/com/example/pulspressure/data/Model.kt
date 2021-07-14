@@ -1,4 +1,4 @@
-package com.example.pulspressure
+package com.example.pulspressure.data
 
 class Model () {
     var addDate: String = ""
